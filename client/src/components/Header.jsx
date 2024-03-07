@@ -34,7 +34,7 @@ function Header() {
           <FaMoon />
         </Button>
         <Link to='/sign-in'>
-          <Button gradientDuoTone='purpleToPink'>Sign In</Button>
+          <Button gradientDuoTone='purpleToPink' outline>Sign In</Button> 
         </Link>
         <Navbar.Toggle />
       </div>
@@ -57,3 +57,4 @@ export default Header
  // 2 anchor tag saath me nhi rakh sakte isliye as div kiye h
  // md use krne se woh attributes medium ya ussed larger sized screen pr apply hoga
  // jb screen size small toh navbar will collapse
+ //button me outline taki hover krne pr color aae
