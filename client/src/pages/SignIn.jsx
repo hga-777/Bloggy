@@ -5,11 +5,17 @@ import { Button, Label, TextInput, FloatingLabel,Avatar, Blockquote, Spinner } f
 import doggy from '../assets/doggy.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from '../redux/user/userSlice';
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const toastOptions = {
     position: "bottom-right",
     autoClose: 5000,
@@ -41,7 +47,7 @@ export default function SignIn() {
     e.preventDefault();
     if(handleValidation()){
       try {
-        setLoading(true);
+        dispatch(signInStart());
         const res = await fetch('/api/auth/signin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -49,16 +55,16 @@ export default function SignIn() {
         });
         const data = await res.json();
         if (data.success === false) {
+          dispatch(signInFailure(data.message));
           toast.error(`${data.message}`, toastOptions);
-          setLoading(false);
           return;
         }
-        setLoading(false);
         if(res.ok) {
+          dispatch(signInSuccess(data));
           navigate('/');
         }
       } catch (error) {
-        setLoading(false);
+        dispatch(signInFailure(error.message));
         toast.error(`${error.message}`, toastOptions);
       }
     }
