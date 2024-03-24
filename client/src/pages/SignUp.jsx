@@ -5,6 +5,7 @@ import { Button, Label, TextInput, FloatingLabel,Avatar, Blockquote, Spinner } f
 import doggy from '../assets/doggy.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OAuth from '../components/OAuth';
 function SignUp() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -140,6 +141,7 @@ function SignUp() {
                 'Sign Up'
               )}              
             </Button>
+            <OAuth/>
           </form>
           <ToastContainer/>
           <div className="flex gap-2 text-sm mt-5">
