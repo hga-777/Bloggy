@@ -6,11 +6,27 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import {HiLogout, HiUser } from "react-icons/hi";
+import { signoutSuccess } from '../redux/user/userSlice';
 function Header() {
     const path = useLocation().pathname;  //yeh batane ke liye agr home page pr h toh home button menu me highlighted rahe 
     const { currentUser } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const {theme} = useSelector((state)=> state.theme);
+    const handleSignout = async () => {
+      try {
+        const res = await fetch('/api/user/signout', {
+          method: 'POST',
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          console.log(data.message);
+        } else {
+          dispatch(signoutSuccess());
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
   return (
     <Navbar className='border-b-2'>   
       <Link
@@ -60,7 +76,7 @@ function Header() {
               <Dropdown.Item icon={HiUser}>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item icon={HiLogout}>Sign out</Dropdown.Item>
+            <Dropdown.Item icon={HiLogout} onClick={handleSignout}>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to='/sign-in'>
